@@ -9,6 +9,15 @@ import subprocess
 from collections import defaultdict
 from pathlib import Path
 
+with open("../ref_ID/ID.txt", "r") as f:
+    content = f.read()
+
+lines = [line.split(" ") for line in content.split("\n")]
+config_ID = []
+for line in lines:
+    config_ID += line
+
+
 def init_parser():
     '''
     Parser Arguments to pass to script from CL
@@ -16,7 +25,7 @@ def init_parser():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--file', required=True, help='Composite Reference BAM file of mapped reads')
-    parser.add_argument('-k', '--keep_id', required=False, default='MN908947.3', type=str, help='Reference ID of genome to keep. Default: MN908947.3')
+    #parser.add_argument('-k', '--keep_id', required=False, type=set, help='Reference ID of genome to keep. Default: MN908947.3')
     parser.add_argument('-q', '--keep_minimum_quality', required=False, type=int, default=60, help='Minimum quality of the reads to keep')
     parser.add_argument('-Q', '--remove_minimum_quality', required=False, type=int, default=0, help='Minimum quality of the reads to be included in removal')
     parser.add_argument('-o', '--output', required=False, default='out.bam', help='Output BAM name')
@@ -25,7 +34,7 @@ def init_parser():
     return parser
 
 
-def get_reads_to_remove(bamfile_path, input_mapping_quality, contig_ID, reads_to_remove=set(), count=0):
+def get_reads_to_remove(bamfile_path, input_mapping_quality, reads_to_remove=set(), count=0):
 
     bamfile = pysam.AlignmentFile(bamfile_path, "rb")
 
