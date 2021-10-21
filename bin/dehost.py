@@ -9,14 +9,15 @@ import subprocess
 from collections import defaultdict
 from pathlib import Path
 
+#读取contig_ID并且存为集合
 with open("../ref_ID/ID.txt", "r") as f:
     content = f.read()
 
 lines = [line.split(" ") for line in content.split("\n")]
-config_ID = []
+contig = []
 for line in lines:
-    config_ID += line
-
+    contig += line
+contig_ID = contig
 
 def init_parser():
     '''
@@ -34,7 +35,7 @@ def init_parser():
     return parser
 
 
-def get_reads_to_remove(bamfile_path, input_mapping_quality, reads_to_remove=set(), count=0):
+def get_reads_to_remove(bamfile_path, contig_ID, input_mapping_quality, reads_to_remove=set(), count=0):
 
     bamfile = pysam.AlignmentFile(bamfile_path, "rb")
 
